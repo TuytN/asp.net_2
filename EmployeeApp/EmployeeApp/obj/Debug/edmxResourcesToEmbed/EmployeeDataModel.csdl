@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="kms_launchModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ASP_API">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Middle" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="DoB" Type="DateTime" Precision="0" />
+    <Property Name="Gender" Type="Boolean" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityContainer Name="kms_launchEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ASP_API" EntityType="Self.ASP_API" />
+  </EntityContainer>
+</Schema>
