@@ -65,13 +65,18 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
-        </div>
+        </div>*@
     </div>
 }
+
+<form action="~/api/employeeapi/?action=save&id=@Model.ID" method="post">
+    <input type="hidden" name="data" value="1" />
+    <input type="submit" value="Save" class="btn btn-default"/>
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

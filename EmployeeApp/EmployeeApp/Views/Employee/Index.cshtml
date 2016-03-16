@@ -12,8 +12,8 @@
 <table class="table">
     <tr>
         <th>
-            <form action="~/Views/Employee/Index.cshtml">
-                <input type="checkbox" name="All" value="All">
+            <form>
+                <input type="checkbox" name="All" value="All" onclick="toggle(this)">
             </form>
         </th>
         <th>
@@ -37,38 +37,94 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr ondblclick="location.href = '@(Url.Action("Details", "Employee", new { id=item.ID }))'">
-        @*@Html.Action("Details", new { id = item.ID })*@
-        <td>
-            <form action="">
-                <input type="checkbox" name=item.ID value=item.ID> @item.ID
-            </form>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Middle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DoB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "index", "employeeapi", "api", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr ondblclick="location.href = '@(Url.Action("Details", "Employee", new { id=item.ID }))'">
+            @*@Html.Action("Details", new { id = item.ID })*@
+            <td>
+                <form action="">
+                    <input type="checkbox" value=@item.ID name=chooseId> @item.ID
+                </form>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Middle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "index", "employeeapi", "api", new { id = item.ID })
+            </td>
+        </tr>
+    }
+    <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+    <script type="text/javascript">
+        function post(path, params, method) {
+            method = method || "post"; // Set method to post by default if not specified.
 
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+        $(document).ready(function () {
+            $("button").click(function () {
+                var id = [];
+                $.each($("input[name='chooseId']:checked"), function () {
+                    id.push($(this).val());
+                });
+                //alert("My favourite sports are: " + id.join(", "));
+                //$.post('../api/employeeapi/', { id: id.join(", ") });
+                //var $form = $(this).closest('form');
+
+                $.post("../api/employeeapi/", { '': id }, function () { location.reload() });
+                //$.post($form.attr('../api/employeeapi/'), $.param({ id: list }, true), function (result) {
+                //    alert('test');
+                //});
+
+            });
+
+        });
+        function toggle(source) {
+            checkboxes = document.getElementsByName('chooseId');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+
+    </script>
 </table>
+
+<button type="button" class="btn btn-default">Delete</button>
+
+@*<form action="~/api/employeeapi/?action=delete" method="post">
+        <input type="submit" value="Delete">
+    </form>*@
